@@ -3,19 +3,18 @@
 import puppeteer from "puppeteer";
 import { NextResponse } from "next/server";
 
-export const maxDuration = 120;
+export const maxDuration = 10;
 export async function GET() {
 
 
 
 
     // Launch Puppeteer
-    const browser = await puppeteer.launch({headless: "new" , args: [
-            "--no-sandbox"],});
+    const browser = await puppeteer.launch({headless: "new"});
     const page = await browser.newPage();
 
     await page.goto(
-        "https://www.google.com/",
+        "https://www.ultimatetcgcm.com/getCard/character?color=red&attribute=ranged&cost=1&abilityBackground=true&trigger=false&counter=true&foilBorder=false&dropShadow=false&abilityTextSize=16&blackBorder=true&rainbow=false&powerBlack=false&leaderBorderEnabled=true&leaderBorder=standard&cardKindRoute=character",
         { timeout: 240000 },
     );
     // Set the viewport to handle the dimensions of the image
@@ -27,7 +26,40 @@ export async function GET() {
     )) as HTMLDivElement | null;
 
     await page.setViewport({ width: 3357, height: 4692 });
-
+    await page.evaluate(
+        async (
+            imageDataURI,
+            abilityTextParagraphParent,
+            cardAbilityText,
+            triggerTextParagraphParent,
+            triggerText,
+        ) => {
+            const img: HTMLImageElement | null =
+                document.querySelector(".cardScreenshot");
+            document.body.style.background = "transparent";
+            if (abilityTextParagraphParent) {
+                const a = document.createElement("p");
+                a.innerHTML = `${cardAbilityText}`;
+                await new Promise((resolve) => setTimeout(resolve, 2000));
+                abilityTextParagraphParent.appendChild(a);
+            }
+            if (triggerTextParagraphParent) {
+                const a = document.createElement("p");
+                a.innerHTML = `${triggerText}`;
+                await new Promise((resolve) => setTimeout(resolve, 2000));
+                triggerTextParagraphParent.appendChild(a);
+            }
+            if (img) {
+                img.src = imageDataURI;
+            }
+            /* document.body.appendChild(img);*/
+        },
+        "",
+        abilityTextParagraphParent,
+        "",
+        triggerTextParagraphParent,
+        "",
+    );
     await page.waitForSelector("body", { timeout: 240000 });
     await new Promise((resolve) => setTimeout(resolve, 3000));
     // Capture a screenshot
