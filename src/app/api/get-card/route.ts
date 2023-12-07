@@ -15,7 +15,7 @@ export async function GET() {
     const page = await browser.newPage();
 
     await page.goto(
-        "https://www.ultimatetcgcm.com/getCard/character?color=red&attribute=ranged&cost=1&abilityBackground=true&trigger=false&counter=true&foilBorder=false&dropShadow=false&abilityTextSize=16&blackBorder=true&rainbow=false&powerBlack=false&leaderBorderEnabled=true&leaderBorder=standard&cardKindRoute=character",
+        "https://www.google.com/",
         { timeout: 240000 },
     );
     // Set the viewport to handle the dimensions of the image
