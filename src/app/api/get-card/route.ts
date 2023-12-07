@@ -3,7 +3,7 @@
 import puppeteer from "puppeteer";
 import { NextResponse } from "next/server";
 
-export const maxDuration = 10;
+export const maxDuration = 120;
 export async function GET() {
 
 
