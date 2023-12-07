@@ -3,14 +3,15 @@
 import puppeteer from "puppeteer";
 import { NextResponse } from "next/server";
 
-export const maxDuration = 10;
+export const maxDuration = 120;
 export async function GET() {
 
 
 
 
     // Launch Puppeteer
-    const browser = await puppeteer.launch({headless: "new"});
+    const browser = await puppeteer.launch({headless: "new" , args: [
+            "--no-sandbox"],});
     const page = await browser.newPage();
 
     await page.goto(
@@ -26,7 +27,7 @@ export async function GET() {
     )) as HTMLDivElement | null;
 
     await page.setViewport({ width: 3357, height: 4692 });
-   
+
     await page.waitForSelector("body", { timeout: 240000 });
     await new Promise((resolve) => setTimeout(resolve, 3000));
     // Capture a screenshot
